@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8mb4" collation="utf8mb4_general_ci">movies-database</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="cast" view="colnames">
+<left>-1</left>
+<top>226</top>
+<width>130</width>
+<height>265</height>
+<sql_create_table>CREATE TABLE `cast` (
+  `castid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `starid` int(11) NOT NULL,
+  `roleid` int(11) NOT NULL,
+  `castname` varchar(50) NOT NULL,
+  `roledescription` varchar(1000) NOT NULL,
+  `rolename` varchar(50) NOT NULL,
+  `deleted` tinyint(1) NOT NULL DEFAULT 0,
+  `datedeleted` datetime NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `addedby` int(11) NOT NULL,
+  PRIMARY KEY (`castid`),
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `cast_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `movies` (`movieid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="directors" view="colnames">
+<left>118</left>
+<top>6</top>
+<width>127</width>
+<height>248</height>
+<sql_create_table>CREATE TABLE `directors` (
+  `directorid` int(11) NOT NULL AUTO_INCREMENT,
+  `directorname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `d.o.b` date NOT NULL,
+  `passportphoto` varchar(1000) NOT NULL,
+  `nationality` varchar(50) NOT NULL,
+  `addedby` int(11) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  PRIMARY KEY (`directorid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="genre" view="colnames">
+<left>276</left>
+<top>13</top>
+<width>112</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `genre` (
+  `genreid` int(11) NOT NULL AUTO_INCREMENT,
+  `genrename` varchar(50) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  KEY `genreid` (`genreid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="language" view="colnames">
+<left>420</left>
+<top>1</top>
+<width>130</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `language` (
+  `languageid` int(11) NOT NULL AUTO_INCREMENT,
+  `languagename` varchar(50) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `userid` int(11) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  `addedby` int(11) NOT NULL,
+  PRIMARY KEY (`languageid`),
+  KEY `languageid` (`languageid`),
+  KEY `addedby` (`addedby`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="languagemovies" view="colnames">
+<left>572</left>
+<top>8</top>
+<width>113</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `languagemovies` (
+  `movieid` int(11) NOT NULL,
+  `languageid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `dateadded` datetime NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  `addedby` int(11) NOT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `7_addedby_index` (`movieid`),
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `languagemovies_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `language` (`languageid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="media" view="colnames">
+<left>693</left>
+<top>1</top>
+<width>113</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `media` (
+  `mediaid` int(11) NOT NULL,
+  `medianame` varchar(50) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `addedby` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="moviegenre" view="colnames">
+<left>823</left>
+<top>5</top>
+<width>106</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `moviegenre` (
+  `movieid` int(11) NOT NULL,
+  `genreid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  `addedby` int(11) NOT NULL,
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `moviegenre_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `genre` (`genreid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="moviemedia" view="colnames">
+<left>170</left>
+<top>278</top>
+<width>113</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `moviemedia` (
+  `movieid` int(11) NOT NULL,
+  `mediaid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `addedby` int(11) DEFAULT NULL,
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `moviemedia_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `genre` (`genreid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="movieproductioncompanies" view="colnames">
+<left>0</left>
+<top>544</top>
+<width>113</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `movieproductioncompanies` (
+  `movieid` int(11) NOT NULL,
+  `companyid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  `addedby` int(11) DEFAULT NULL,
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `movieproductioncompanies_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `productioncompanies` (`companyid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="movierating" view="colnames">
+<left>398</left>
+<top>494</top>
+<width>113</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `movierating` (
+  `movieid` int(11) NOT NULL AUTO_INCREMENT,
+  `ratingid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `addedby` int(11) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  PRIMARY KEY (`movieid`),
+  KEY `ratingid` (`ratingid`),
+  KEY `movierating_ibfk_2` (`addedby`),
+  CONSTRAINT `movierating_ibfk_2` FOREIGN KEY (`addedby`) REFERENCES `rating` (`ratingid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="movieresolution" view="colnames">
+<left>811</left>
+<top>224</top>
+<width>113</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `movieresolution` (
+  `movieid` int(11) NOT NULL,
+  `resolutionid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `addedby` int(11) DEFAULT NULL,
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `movieresolution_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `resolution` (`resolutionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="movieroles" view="colnames">
+<left>665</left>
+<top>600</top>
+<width>113</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `movieroles` (
+  `roleid` int(11) NOT NULL,
+  `rolename` varchar(50) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `addedby` int(11) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  KEY `addedby` (`addedby`),
+  KEY `addedby_2` (`addedby`),
+  CONSTRAINT `movieroles_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `users` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="movies" view="colnames">
+<left>485</left>
+<top>233</top>
+<width>113</width>
+<height>255</height>
+<sql_create_table>CREATE TABLE `movies` (
+  `movieid` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) NOT NULL,
+  `releasedate` datetime NOT NULL,
+  `synopsis` varchar(1000) NOT NULL,
+  `poster` varchar(50) NOT NULL,
+  `trailer` varchar(1000) NOT NULL,
+  `duration` time NOT NULL,
+  `directorid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `addedby` int(11) NOT NULL,
+  PRIMARY KEY (`movieid`),
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `movies_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `moviestars` (`starid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="moviestars" view="colnames">
+<left>798</left>
+<top>478</top>
+<width>120</width>
+<height>248</height>
+<sql_create_table>CREATE TABLE `moviestars` (
+  `starid` int(11) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `d.o.b` date NOT NULL,
+  `nationality` varchar(50) NOT NULL,
+  `alist` tinyint(1) NOT NULL,
+  `passporthoto` varchar(1000) NOT NULL,
+  `gender` varchar(10) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `addedby` int(11) NOT NULL,
+  PRIMARY KEY (`starid`),
+  KEY `addedby` (`addedby`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="nationality" view="colnames">
+<left>652</left>
+<top>246</top>
+<width>121</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `nationality` (
+  `countryid` int(11) NOT NULL AUTO_INCREMENT,
+  `countryname` varchar(50) NOT NULL,
+  PRIMARY KEY (`countryid`),
+  CONSTRAINT `nationality_ibfk_1` FOREIGN KEY (`countryid`) REFERENCES `users` (`addedby`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="objects" view="colnames">
+<left>1</left>
+<top>39</top>
+<width>113</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `objects` (
+  `objectid` int(11) NOT NULL AUTO_INCREMENT,
+  `objectname` varchar(50) NOT NULL,
+  PRIMARY KEY (`objectid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="privileges" view="colnames">
+<left>128</left>
+<top>504</top>
+<width>106</width>
+<height>163</height>
+<sql_create_table>CREATE TABLE `privileges` (
+  `userid` int(11) NOT NULL,
+  `objectid` int(11) NOT NULL,
+  `valid` tinyint(1) NOT NULL,
+  `addedby` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  KEY `userid` (`userid`),
+  KEY `privileges_ibfk_2` (`addedby`),
+  CONSTRAINT `privileges_ibfk_2` FOREIGN KEY (`addedby`) REFERENCES `objects` (`objectid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="productioncompanies" view="colnames">
+<left>263</left>
+<top>518</top>
+<width>130</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `productioncompanies` (
+  `companyid` int(11) NOT NULL AUTO_INCREMENT,
+  `companyname` varchar(50) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  PRIMARY KEY (`companyid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="rating" view="colnames">
+<left>534</left>
+<top>591</top>
+<width>113</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `rating` (
+  `ratingid` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  KEY `ratingid` (`ratingid`),
+  CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`ratingid`) REFERENCES `movierating` (`movieid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="resolution" view="colnames">
+<left>643</left>
+<top>388</top>
+<width>134</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `resolution` (
+  `resolutionid` int(11) NOT NULL AUTO_INCREMENT,
+  `resolutionname` varchar(50) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `datedeleted` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `deletedby` int(11) NOT NULL,
+  PRIMARY KEY (`resolutionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+<table name="users" view="colnames">
+<left>307</left>
+<top>233</top>
+<width>122</width>
+<height>248</height>
+<sql_create_table>CREATE TABLE `users` (
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `systemadmin` tinyint(1) NOT NULL,
+  `dateadded` datetime NOT NULL,
+  `addedby` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `mobile` int(11) NOT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `7_addedby_index` (`userid`),
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `users_ibfk_5` FOREIGN KEY (`userid`) REFERENCES `language` (`addedby`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
